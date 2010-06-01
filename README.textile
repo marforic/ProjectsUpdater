@@ -1,0 +1,14 @@
+h3. Contact and About
+
+ProjectUpdater has been created by Claudio Marforio (marforio@mail.com). Please contact him if you find it useful, if you have a feature request or if you encounter any kind of bug!
+
+h3. Rationale
+
+I work with code. As anyone that works with code I use revision systems. I use mostly *git* and *svn*. What happens is that I have a folder on my computer which contains subfolders with all the projects I'm working on, either mine or others that I'm helping/forking (github ones, as well!).
+
+When you start having more than 10 projects, lots of collaborators it becomes unfeasible to always run "git pull", "svn update", ... on all your projects. With this script you simply run it passing as argument the top directory that you want to check for updates and it will crawl all subdirectories looking for git or svn repositories. If found it will check if any changes are pending (we don't want merges, when running such batch scripts!) and if not it will update the project.
+
+At the end an _handy_ summary is presented. Mainly 3 things could happen:
+    * UPDATE: a repository has been successfully updated.
+    * WARNING: a repository has been found, but changes aren't committed, check manually.
+    * ERROR: while updating a repository some error has occurred, check manually.
