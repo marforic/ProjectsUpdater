@@ -29,6 +29,9 @@ working_chars=('|' '/' '-' '\')
 
 # main dir
 function main {
+	if [[ "$1" == "." || "$1" == "./" ]]; then
+		main `pwd`
+	fi
 	if test -e "$1"; then
 		for i in `ls -F "$1"`; do
 			if test -d "$1$i"; then
