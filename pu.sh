@@ -51,7 +51,7 @@ function check_repo {
 		#echo -e "\t------ SVN ------"
 		cd "$1"
 		changed=`svn st`
-		if [[ $changed != "" ]]; then
+		if [[ $changed == "" ]]; then
 			#echo -e "Updating: $1"
 			update_result=`svn update`
 			update_worked=`echo $update_result | grep "At revision"`
@@ -75,15 +75,17 @@ function check_repo {
 		changed=`git st | grep "nothing to commit"`
 		if [[ $changed != "" ]]; then
 			#echo -e "Updating: $1"
-			pull_result=`git pull`
-			pull_worked=`echo $pull_result | grep "Already up-to-date."`
+			pull_st=`git pull 2>/tmp/pu_status`
+			pull_result=$(</tmp/pu_status)
+			rm /tmp/pu_status
+			pull_worked=`echo $pull_st | grep "Already up-to-date."`
 			if [[ $pull_worked == "" ]]; then
 				pull_worked=`echo $pull_result | grep "fatal"`
-				if [[ $pull_worked == "" ]]; then
+				if [[ $pull_worked != "" ]]; then
 					GIT_ERRORS[${#GIT_ERRORS[@]}]="$1"
 				else
 					GIT_UPDATE[${#GIT_UPDATE[@]}]="$1"
-				fi
+				fi				
 			fi
 			#echo $pull_result
 		else
@@ -119,7 +121,6 @@ function check_git {
 # summary
 function summary {
 	echo -e "\r                                                             " #remove the "script is working:"
-	echo -e "################## SUMMARY ##################"
 	echo
 	echo "Repositories checked: $REPO_CHECKED"
 	echo
